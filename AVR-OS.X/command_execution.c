@@ -170,63 +170,65 @@ void execute_command(char *cmd, char **arg)
 
 void login()
 {
-    char *cmd = NULL;
+    char cmd[MAX_CMD_LEN];  // Buffer for username and password
     char readBuffer[50];
     int attempts = 0;
-    
-    usart_send_string("Enter username: ");
-    
-    while(1) {
-        cmd = NULL;
-        
-        while (cmd == NULL)  // Keep calling until a full command is received
-        {
-            cmd = uart_receive_command();
-        }
-        
-        read_eeprom(0x00, readBuffer, sizeof(readBuffer));
-        
-        if (strncmp(cmd, readBuffer, 10) == 0) {
-            usart_send_string("Success\n");
-            break;
-        }
-        else 
-            usart_send_string("Wrong username. Try again.\n");
-        
-        attempts++;
-        
-        if(attempts == 3){
-            usart_send_string("Too many attempts. Try again in 30 seconds");
-            _delay_ms(3000);
-            attempts = 0;
-        }
-    }
 
-    usart_send_string("Enter password: ");
-    
-    while(1) {
-        cmd = NULL;
-        
-        while (cmd == NULL)  // Keep calling until a full command is received
-        {
-            cmd = uart_receive_command();
+    while (1) {
+        while (1) {
+            usart_send_string("Enter username: ");
+            char *input = NULL;
+            while (input == NULL) {  // Wait until a command is received
+                input = uart_receive_command();
+            }
+            strncpy(cmd, input, MAX_CMD_LEN);
+            cmd[MAX_CMD_LEN - 1] = '\0';  // Ensure null termination
+            
+            read_eeprom(0x00, readBuffer, sizeof(readBuffer));
+            
+            if (strncmp(cmd, readBuffer, 10) == 0) {
+                usart_send_string("Success\n");
+                break;  // Move to password entry
+            } else {
+                usart_send_string("Wrong username. Try again.\n");
+            }
         }
-        
-        read_eeprom(0x20, readBuffer, sizeof(readBuffer)); 
-        
-        if (strncmp(cmd, readBuffer, 10) == 0) {
-            usart_send_string("Success\n");
-            break;
+
+        // Password loop (user gets 3 tries)
+        while (attempts < 3) {
+            usart_send_string("Enter password: ");
+            
+            char password[MAX_CMD_LEN];
+            uint8_t i = 0;
+
+            while (1) {
+                char c = usart_receive();  // Receive a character
+
+                if (c == '\r' || c == '\n') {  // If Enter is pressed
+                    password[i] = '\0';  // Null-terminate
+                    usart_send_string("\n");  // Move to the next line
+                    break;
+                } 
+                else if (i < MAX_CMD_LEN - 1) {  
+                    password[i++] = c;  // Store character but don't echo it
+                }
+            }
+
+            // Compare entered password with stored password
+            read_eeprom(0x20, readBuffer, sizeof(readBuffer));
+
+            if (strncmp(password, readBuffer, 10) == 0) {
+                usart_send_string("Success\n");
+                return;  // Exit function after successful login
+            } else {
+                usart_send_string("Wrong password. Try again.\n");
+                attempts++;
+            }
         }
-        else 
-            usart_send_string("Wrong password. Try again.\n");
-        
-        attempts++;
-        
-        if(attempts == 3){
-            usart_send_string("Too many attempts. Try again in 30 seconds");
-            _delay_ms(10);
-            attempts = 0;
-        }
+
+        // If user fails 3 times, enforce cooldown
+        usart_send_string("Too many attempts. Try again in 30 seconds.\n");
+        _delay_ms(3000);
+        attempts = 0;  // Reset attempts
     }
 }

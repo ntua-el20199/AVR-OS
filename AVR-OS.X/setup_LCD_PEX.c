@@ -5,7 +5,6 @@
 #include<util/delay.h>
 #include <stdio.h>
 
-#include <xc.h>
 #include "setup_LCD_PEX.h"
 #include "setup_TWI.h"
 
