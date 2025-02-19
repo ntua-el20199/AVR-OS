@@ -20,7 +20,9 @@ build/default/production/command_execution.o.d \
  c:\program\ files\microchip\xc8\v2.36\avr\avr\include\string.h \
  c:\program\ files\microchip\xc8\v2.36\avr\avr\include\stdio.h \
  c:\program\ files\microchip\xc8\v2.36\avr\avr\include\avr\eeprom.h \
- c:\program\ files\microchip\xc8\v2.36\avr\lib\gcc\avr\5.4.0\include\stddef.h
+ c:\program\ files\microchip\xc8\v2.36\avr\lib\gcc\avr\5.4.0\include\stddef.h \
+ c:\program\ files\microchip\xc8\v2.36\avr\avr\include\stdlib.h \
+ UART_setup.h eeprom.h
 
 c:\program\ files\microchip\xc8\v2.36\avr\avr\include\avr\io.h:
 
@@ -63,3 +65,9 @@ c:\program\ files\microchip\xc8\v2.36\avr\avr\include\stdio.h:
 c:\program\ files\microchip\xc8\v2.36\avr\avr\include\avr\eeprom.h:
 
 c:\program\ files\microchip\xc8\v2.36\avr\lib\gcc\avr\5.4.0\include\stddef.h:
+
+c:\program\ files\microchip\xc8\v2.36\avr\avr\include\stdlib.h:
+
+UART_setup.h:
+
+eeprom.h:

@@ -3,9 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/harri/Desktop/AVR-OS.X/main.c</file>
-            <file>file:/C:/Users/harri/Desktop/AVR-OS.X/UART_setup.c</file>
-            <file>file:/C:/Users/harri/Desktop/AVR-OS.X/UART_setup.h</file>
+            <file>file:/G:/My%20Drive/University/Microlab/AVR/AVR-OS/AVR-OS.X/main.c</file>
+            <file>file:/G:/My%20Drive/University/Microlab/AVR/AVR-OS/AVR-OS.X/setup_LCD_PEX.h</file>
+            <file>file:/G:/My%20Drive/University/Microlab/AVR/AVR-OS/AVR-OS.X/command_execution.c</file>
+            <file>file:/G:/My%20Drive/University/Microlab/AVR/AVR-OS/AVR-OS.X/setup_LCD_PEX.c</file>
+            <file>file:/G:/My%20Drive/University/Microlab/AVR/AVR-OS/AVR-OS.X/UART_setup.c</file>
         </group>
     </open-files>
 </project-private>

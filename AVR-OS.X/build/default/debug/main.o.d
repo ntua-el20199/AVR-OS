@@ -18,7 +18,7 @@ build/default/debug/main.o.d build/default/debug/main.o: main.c \
  c:\program\ files\microchip\xc8\v2.36\avr\avr\include\math.h \
  c:\program\ files\microchip\xc8\v2.36\avr\avr\include\string.h \
  c:\program\ files\microchip\xc8\v2.36\avr\avr\include\stdio.h \
- UART_setup.h command_execution.h eeprom.h
+ UART_setup.h command_execution.h eeprom.h setup_LCD_PEX.h setup_TWI.h
 
 c:\program\ files\microchip\xc8\v2.36\avr\avr\include\avr\io.h:
 
@@ -63,3 +63,7 @@ UART_setup.h:
 command_execution.h:
 
 eeprom.h:
+
+setup_LCD_PEX.h:
+
+setup_TWI.h:
