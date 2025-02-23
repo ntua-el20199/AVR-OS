@@ -10,6 +10,7 @@
 #include "eeprom.h"
 #include "setup_LCD_PEX.h"
 #include "setup_TWI.h"
+#include "setup_OWI.h"
 
 #define BAUD 9600
 #define MYUBRR F_CPU/16/BAUD-1
@@ -24,8 +25,10 @@ void setup() {
     lcd_clear_display();
     _delay_ms(100);
     usart_init(MYUBRR);
-    usart_send_string("Welcome to AVR-OS\n");
-    usart_send_string("Login\n");
+    ADMUX = 0b01000000;   // ADC right-adjusted, select ADC0
+    ADCSRA = 0b10000111;  // Enable ADC with a prescaler of 128
+    usart_send_string("Welcome to AVR-OS\n\r");
+    usart_send_string("Login\n\r");
 }
 
 int main(void)
