@@ -51,6 +51,7 @@ char* uart_receive_command()
 {
     static uint8_t i = 0;  // Keeps track of position
     char c = usart_receive();
+    static uint8_t cursor_pos = 0;
     usart_transmit(c);  // Echo character back
 
     if (c == '\r' || c == '\n') // Enter key
@@ -60,16 +61,63 @@ char* uart_receive_command()
             command[i] = '\0'; // Null-terminate
             usart_send_string("\n"); // Move to next line
             i = 0; // Reset buffer for next command
+            cursor_pos = 0; //Reset cursor position
             return command; // Return the full command
         }
         else
-        {
+        {   usart_send_string("\n");
             return NULL; // Ignore empty command
+        }
+    }
+    // Handle Backspace
+    else if (c == 0x08 || c == 0x7f)
+    {
+        if (cursor_pos > 0)  // Only delete if cursor is not at start
+        {   
+            
+            for (uint8_t j = cursor_pos - 1; j < i-1; j++)
+            {   
+                command[j] = command[j + 1];  // Shift characters left
+            }
+            
+            command[cursor_pos - 1] = '\0';
+            i--;
+            cursor_pos--;
+            command[i] = '\0';  // Maintain null-termination
+            
+            
+        }
+    }
+    else if (c == '\x1B')  // Escape sequence start
+    {
+        char next = usart_receive();  // Read '['
+        char direction = usart_receive();  // Read 'D' or 'C'
+        
+        if (next == '[')
+        {
+            if (direction == 'D' && cursor_pos > 0)  // Left Arrow
+            {
+                usart_send_string("\b");  // Move cursor left
+                cursor_pos--;
+            }
+            else if (direction == 'C' && cursor_pos < i)  // Right Arrow
+            {   
+                usart_send_string("\x1B[C");
+                cursor_pos++;
+            }
         }
     }
     else if (i < MAX_CMD_LEN - 1)
     {
-        command[i++] = c; // Store character in buffer
+        // Insert at cursor position
+        for (uint8_t j = i; j > cursor_pos; j--)
+        {
+            command[j] = command[j-1];  // Shift characters right
+        }
+        command[cursor_pos] = c;  // Insert new character
+        i++;
+        cursor_pos++;
+        command[i] = '\0';  // Ensure null-termination     
     }
 
     return NULL; // Keep waiting for full command
